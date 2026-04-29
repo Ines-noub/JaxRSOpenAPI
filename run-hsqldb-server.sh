@@ -1,4 +1,5 @@
-mvn dependency:copy-dependencies
-mkdir data 2> /dev/null
+#!/bin/bash
+HSQLDB_JAR="$HOME/.m2/repository/org/hsqldb/hsqldb/2.7.2/hsqldb-2.7.2.jar"
+mkdir -p data
 cd data
-java -cp ../target/dependency/hsqldb-2.7.2.jar org.hsqldb.Server
+java -cp "$HSQLDB_JAR" org.hsqldb.Server

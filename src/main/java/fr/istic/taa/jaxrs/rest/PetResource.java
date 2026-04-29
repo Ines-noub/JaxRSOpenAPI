@@ -14,25 +14,25 @@ import jakarta.ws.rs.core.Response;
 @Produces({"application/json", "application/xml"})
 public class PetResource {
 
-  @GET
-  @Path("/{petId}")
-  public Pet getPetById(@PathParam("petId") Long petId)  {
-      // return pet
-      return new Pet();
-  }
+    @GET
+    @Path("/{petId}")
+    public Pet getPetById(@PathParam("petId") Long petId)  {
+        // return pet
+        return new Pet();
+    }
 
-  @GET
-  @Path("/")
-  public Pet getPet(Long petId)  {
-      return new Pet();
-  }
+    @GET
+    @Path("/")
+    public Pet getPet(Long petId)  {
+        return new Pet();
+    }
 
-  
-  @POST
-  @Consumes("application/json")
-  public Response addPet(
-      @Parameter(description = "Pet object that needs to be added to the store", required = true) Pet pet) {
-    // add pet
-    return Response.ok().entity("SUCCESS").build();
-  }
+
+    @POST
+    @Consumes("application/json")
+    public Response addPet(
+            @Parameter(description = "Pet object that needs to be added to the store", required = true) Pet pet) {
+        // add pet
+        return Response.ok().entity("SUCCESS").build();
+    }
 }

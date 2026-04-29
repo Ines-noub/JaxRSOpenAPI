@@ -19,26 +19,35 @@ package fr.istic.taa.jaxrs;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.istic.taa.jaxrs.rest.PetResource;
+import fr.istic.taa.jaxrs.configuration.JacksonConfig;
+import fr.istic.taa.jaxrs.rest.*;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
 @ApplicationPath("/")
 public class TestApplication extends Application {
-	
 
-    @Override
-    public Set<Class<?>> getClasses() {
+	@Override
+	public Set<Class<?>> getClasses() {
+		final Set<Class<?>> clazzes = new HashSet<Class<?>>();
 
-        final Set<Class<?>> clazzes = new HashSet<Class<?>>();
+		// OpenAPI/Swagger
+		clazzes.add(OpenApiResource.class);
+        clazzes.add(SwaggerResource.class);
 
-        clazzes.add(OpenApiResource.class);
-        clazzes.add(PetResource.class);
-//        clazzes.add(AcceptHeaderOpenApiResource.class);
-         
+        //Configuration
+        clazzes.add(JacksonConfig.class);
+		
+		// Ressources REST
+		clazzes.add(PetResource.class);
+		clazzes.add(ArtisteResource.class);
+		clazzes.add(EvenementResource.class);
+		clazzes.add(TicketResource.class);
+		clazzes.add(UtilisateurResource.class);
+		clazzes.add(OrganisateurResource.class);
 
-        return clazzes;
-    }
+		return clazzes;
+	}
 
 }

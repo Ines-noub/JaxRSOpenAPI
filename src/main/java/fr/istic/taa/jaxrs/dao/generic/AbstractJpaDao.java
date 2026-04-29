@@ -9,7 +9,6 @@ import jakarta.persistence.EntityTransaction;
 public abstract class AbstractJpaDao<K, T extends Serializable> implements IGenericDao<K, T> {
 
 	private Class<T> clazz;
-
 	protected EntityManager entityManager;
 
 	public AbstractJpaDao() {
@@ -25,7 +24,7 @@ public abstract class AbstractJpaDao<K, T extends Serializable> implements IGene
 	}
 
 	public List<T> findAll() {
-		return entityManager.createQuery("select e from " + clazz.getName() + " as e",clazz).getResultList();
+		return entityManager.createQuery("select e from " + clazz.getName() + " as e", clazz).getResultList();
 	}
 
 	public void save(T entity) {
@@ -33,7 +32,6 @@ public abstract class AbstractJpaDao<K, T extends Serializable> implements IGene
 		t.begin();
 		entityManager.persist(entity);
 		t.commit();
-
 	}
 
 	public T update(final T entity) {
@@ -42,7 +40,6 @@ public abstract class AbstractJpaDao<K, T extends Serializable> implements IGene
 		T res = entityManager.merge(entity);
 		t.commit();
 		return res;
-
 	}
 
 	public void delete(T entity) {
