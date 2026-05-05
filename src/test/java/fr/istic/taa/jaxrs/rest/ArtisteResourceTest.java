@@ -96,7 +96,7 @@ public class ArtisteResourceTest {
 	@Test
 	public void testGetArtistesByNationalite() {
 		try {
-			Response response = resource.getArtistesByNationalite("Français");
+			Response response = resource.getByNationalite("Français");
 			assertNotNull(response);
 			assertEquals(200, response.getStatus());
 		} catch (Exception e) {
