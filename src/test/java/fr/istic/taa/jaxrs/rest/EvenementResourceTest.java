@@ -67,7 +67,7 @@ public class EvenementResourceTest {
 	@Test
 	public void testUpdateEvenement() {
 		try {
-			evenement.setId(1L);
+			evenement.setIdEvenement(1L);
 			evenement.setNom("Festival Rock 2024");
 			evenement.setDate(LocalDate.of(2024, 6, 15));
 			
@@ -95,7 +95,7 @@ public class EvenementResourceTest {
 	@Test
 	public void testGetEvenementsByDate() {
 		try {
-			Response response = resource.getEvenementsByDate(LocalDate.of(2024, 6, 15).toString());
+			Response response = resource.getEvenementById(Long.valueOf(LocalDate.of(2024, 6, 15).toString()));
 			assertNotNull(response);
 			assertEquals(200, response.getStatus());
 		} catch (Exception e) {

@@ -63,7 +63,7 @@ public class TicketDaoTest {
 				// Tous les tickets retournés doivent appartenir à l'événement 1
 				for (Ticket t : tickets) {
 					if (t.getEvenement() != null) {
-						assertEquals(1L, t.getEvenement().getId().longValue());
+						assertEquals(1L, t.getEvenement().getIdEvenement().longValue());
 					}
 				}
 			} catch (Exception e) {
@@ -138,7 +138,7 @@ public class TicketDaoTest {
 				// Tous les tickets retournés doivent appartenir à l'événement 1
 				for (Ticket t : tickets) {
 					if (t.getEvenement() != null) {
-						assertEquals(1L, t.getEvenement().getId().longValue());
+						assertEquals(1L, t.getEvenement().getIdEvenement().longValue());
 					}
 				}
 			} catch (Exception e) {

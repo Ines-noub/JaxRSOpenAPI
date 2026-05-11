@@ -56,7 +56,7 @@ public class ArtisteTest {
 		assertTrue(artiste.getEvenements().isEmpty());
 
 		Evenement evt = new Evenement();
-		evt.setId(1L);
+		evt.setIdEvenement(1L);
 		evt.setNom("Concert");
 		artiste.getEvenements().add(evt);
 

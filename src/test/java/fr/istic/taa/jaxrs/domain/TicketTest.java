@@ -39,7 +39,7 @@ public class TicketTest {
 	@Test
 	public void testTicketEvenement() {
 		Evenement evt = new Evenement();
-		evt.setId(1L);
+		evt.setIdEvenement(1L);
 		evt.setNom("Concert");
 		ticket.setEvenement(evt);
 

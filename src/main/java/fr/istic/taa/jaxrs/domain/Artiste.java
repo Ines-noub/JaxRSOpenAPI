@@ -44,6 +44,9 @@ public class Artiste implements Serializable {
 	@Column(name = "site_web")
 	private String siteWeb;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
 	@ManyToMany(mappedBy = "artistes")
 	private List<Evenement> evenements = new ArrayList<>();
 
@@ -143,6 +146,14 @@ public class Artiste implements Serializable {
 		this.evenements = evenements;
 	}
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 	@Override
 	public String toString() {
 		return "Artiste{" +
@@ -155,6 +166,7 @@ public class Artiste implements Serializable {
 				", description='" + description + '\'' +
 				", popularite=" + popularite +
 				", siteWeb='" + siteWeb + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
 				'}';
 	}
 }

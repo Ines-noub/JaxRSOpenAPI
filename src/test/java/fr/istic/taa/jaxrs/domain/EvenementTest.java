@@ -18,14 +18,14 @@ public class EvenementTest {
 
 	@Test
 	public void testEvenementCreation() {
-		evenement.setId(1L);
+		evenement.setIdEvenement(1L);
 		evenement.setNom("Festival Rock 2024");
 		evenement.setDate(LocalDate.of(2024, 6, 15));
 		evenement.setGenre("Rock");
 		evenement.setLieu("Paris");
 		evenement.setCapacite(5000L);
 
-		assertEquals(1L, evenement.getId().longValue());
+		assertEquals(1L, evenement.getIdEvenement().longValue());
 		assertEquals("Festival Rock 2024", evenement.getNom());
 		assertEquals(LocalDate.of(2024, 6, 15), evenement.getDate());
 		assertEquals("Rock", evenement.getGenre());

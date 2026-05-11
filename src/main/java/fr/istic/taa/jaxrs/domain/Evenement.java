@@ -25,6 +25,20 @@ public class Evenement implements Serializable {
     private Long capacite;
     private Float popularite;
     private String description;
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "prix")
+    private Double prix;
+
+    @Column(name = "heure")
+    private String heure;
+
+    @Column(name = "nb_tickets_vendus")
+    private Long nbTicketsVendus;
+
+    @Column(name = "categorie")
+    private String categorie;
 
     @ManyToOne
     @JoinColumn(name = "organisateur_id")
@@ -75,4 +89,44 @@ public class Evenement implements Serializable {
 
     public List<Ticket> getTickets() { return tickets; }
     public void setTickets(List<Ticket> tickets) { this.tickets = tickets; }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(Double prix) {
+        this.prix = prix;
+    }
+
+    public String getHeure() {
+        return heure;
+    }
+
+    public void setHeure(String heure) {
+        this.heure = heure;
+    }
+
+    public Long getNbTicketsVendus() {
+        return nbTicketsVendus;
+    }
+
+    public void setNbTicketsVendus(Long nbTicketsVendus) {
+        this.nbTicketsVendus = nbTicketsVendus;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
 }
