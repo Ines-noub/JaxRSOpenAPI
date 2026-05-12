@@ -3,49 +3,66 @@ package fr.istic.taa.jaxrs.dto;
 import jakarta.ws.rs.core.MultivaluedMap;
 
 /**
- * DTO pour la recherche et sérialisation des utilisateurs
+ * DTO utilisateur
  */
 public class UtilisateurDto {
-	private String nom;
-	private String prenom;
-	private String email;
 
-	// Constructeur vide
-	public UtilisateurDto() {
-	}
+    private Long idPersonne;
 
-	// Constructeur avec MultivaluedMap (depuis QueryParameters)
-	public UtilisateurDto(MultivaluedMap<String, String> queryParameters) {
-		if (queryParameters != null) {
-			this.nom = queryParameters.getFirst("nom");
-			this.prenom = queryParameters.getFirst("prenom");
-			this.email = queryParameters.getFirst("email");
-		}
-	}
+    private String nom;
+    private String prenom;
+    private String email;
 
-	// Getters et Setters
-	public String getNom() {
-		return nom;
-	}
+    private String role;
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public UtilisateurDto() {
+    }
 
-	public String getPrenom() {
-		return prenom;
-	}
+    public UtilisateurDto(MultivaluedMap<String, String> queryParameters) {
+        if (queryParameters != null) {
+            this.nom = queryParameters.getFirst("nom");
+            this.prenom = queryParameters.getFirst("prenom");
+            this.email = queryParameters.getFirst("email");
+        }
+    }
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
+    public Long getIdPersonne() {
+        return idPersonne;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setIdPersonne(Long idPersonne) {
+        this.idPersonne = idPersonne;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
-

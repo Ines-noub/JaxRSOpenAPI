@@ -14,6 +14,7 @@ public abstract class Personne implements Serializable {
     private String nom;
     private String prenom;
     private String email;
+    private String password;
 
     public Personne() {}
 
@@ -22,6 +23,7 @@ public abstract class Personne implements Serializable {
         this.prenom = prenom;
         this.email = email;
     }
+
 
     public Long getIdPersonne() {
         return idPersonne;
@@ -53,6 +55,14 @@ public abstract class Personne implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

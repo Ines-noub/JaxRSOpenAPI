@@ -2,46 +2,62 @@ package fr.istic.taa.jaxrs.service;
 
 import fr.istic.taa.jaxrs.dao.generic.TicketDao;
 import fr.istic.taa.jaxrs.dao.generic.EvenementDao;
+import fr.istic.taa.jaxrs.dao.generic.UtilisateurDao;
+import fr.istic.taa.jaxrs.domain.Evenement;
 import fr.istic.taa.jaxrs.domain.StatutTicketEnum;
 import fr.istic.taa.jaxrs.domain.Ticket;
+import fr.istic.taa.jaxrs.domain.Utilisateur;
 
 import java.util.List;
 
 public class TicketService {
 
-    private final TicketDao ticketDao;
-    private final EvenementDao evenementDao;
+    private final TicketDao ticketDao = new TicketDao();
+    private final EvenementDao evenementDao = new EvenementDao();
+    private final UtilisateurDao utilisateurDao = new UtilisateurDao();
 
-    public TicketService() {
-        ticketDao = new TicketDao();
-        evenementDao = new EvenementDao();
-    }
-
-    // 🔹 CREATE
     public Ticket createTicket(Ticket ticket) {
-
-        if (ticket == null || ticket.getEvenement() == null) {
+        if (ticket == null || ticket.getEvenement() == null || ticket.getUtilisateur() == null) {
             throw new IllegalArgumentException("Données invalides");
         }
 
-        // 🔥 IMPORTANT : recharger l'événement (JPA)
-        if (ticket.getEvenement().getIdEvenement() != null) {
-            ticket.setEvenement(
-                    evenementDao.findOne(ticket.getEvenement().getIdEvenement())
-            );
+        Long evenementId = ticket.getEvenement().getIdEvenement();
+        Long utilisateurId = ticket.getUtilisateur().getIdPersonne();
+
+        if (evenementId == null || utilisateurId == null) {
+            throw new IllegalArgumentException("ID événement ou utilisateur manquant");
+        }
+
+        Evenement evenement = evenementDao.findOne(evenementId);
+        Utilisateur utilisateur = utilisateurDao.findOne(utilisateurId);
+
+        if (evenement == null) {
+            throw new IllegalArgumentException("Événement introuvable");
+        }
+
+        if (utilisateur == null) {
+            throw new IllegalArgumentException("Utilisateur introuvable");
+        }
+
+        ticket.setEvenement(evenement);
+        ticket.setUtilisateur(utilisateur);
+
+        if (ticket.getStatut() == null) {
+            ticket.setStatut(StatutTicketEnum.ACHETE);
+        }
+
+        if (ticket.getPrixUnitaire() == null && evenement.getPrix() != null) {
+            ticket.setPrixUnitaire(evenement.getPrix());
         }
 
         ticketDao.save(ticket);
         return ticket;
-
     }
 
-    // 🔹 READ ALL
     public List<Ticket> getAllTickets() {
         return ticketDao.findAll();
     }
 
-    // 🔹 READ BY ID
     public Ticket getTicketById(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("ID invalide");
@@ -49,9 +65,7 @@ public class TicketService {
         return ticketDao.findOne(id);
     }
 
-    // 🔹 UPDATE
     public Ticket updateTicket(Long id, Ticket ticket) {
-
         if (id == null || ticket == null) {
             throw new IllegalArgumentException("Données invalides");
         }
@@ -59,41 +73,35 @@ public class TicketService {
         Ticket existing = ticketDao.findOne(id);
 
         if (existing == null) {
-            throw new RuntimeException("Ticket non trouvé");
+            throw new IllegalArgumentException("Ticket non trouvé");
         }
 
         ticket.setIdTicket(id);
-
         return ticketDao.update(ticket);
     }
 
-    // 🔹 DELETE
     public void deleteTicket(Long id) {
-
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("ID invalide");
-        }
-
-        Ticket ticket = ticketDao.findOne(id);
-
-        if (ticket == null) {
-            throw new RuntimeException("Ticket non trouvé");
-        }
-
+        Ticket ticket = getTicketById(id);
         ticketDao.delete(ticket);
     }
 
-    // 🔹 MÉTIER
+    public Ticket findOne(Long id) {
+        return ticketDao.findOne(id);
+    }
 
-    public List<Ticket> getByStatut(StatutTicketEnum statut) {
+    public void delete(Ticket ticket) {
+        ticketDao.delete(ticket);
+    }
+
+    public List<Ticket> getTicketsByStatut(StatutTicketEnum statut) {
         return ticketDao.findByStatut(statut);
     }
 
-    public List<Ticket> getByUtilisateur(Long utilisateurId) {
+    public List<Ticket> getTicketsByUtilisateur(Long utilisateurId) {
         return ticketDao.findByUtilisateur(utilisateurId);
     }
 
-    public List<Ticket> getByEvenement(Long evenementId) {
+    public List<Ticket> getTicketsByEvenement(Long evenementId) {
         return ticketDao.findByEvenement(evenementId);
     }
 
@@ -103,30 +111,5 @@ public class TicketService {
 
     public Long getPlacesRestantes(Long evenementId) {
         return ticketDao.countPlacesRestantes(evenementId);
-    }
-    public Ticket findOne(Long id) {
-        return ticketDao.findOne(id);
-    }
-
-    public List<Ticket> findAll() {
-        return ticketDao.findAll();
-    }
-    public void delete(Ticket ticket) {
-        ticketDao.delete(ticket);
-    }
-    public List<Ticket> getTicketsByStatut(StatutTicketEnum statut) {
-        return ticketDao.findByStatut(statut);
-    }
-    /**
-     * Récupère les tickets d'un utilisateur
-     */
-    public List<Ticket> getTicketsByUtilisateur(Long utilisateurId) {
-        return ticketDao.findByUtilisateur(utilisateurId);
-    }
-    /**
-     * Récupère les tickets d'un événement
-     */
-    public List<Ticket> getTicketsByEvenement(Long evenementId) {
-        return ticketDao.findByEvenement(evenementId);
     }
 }

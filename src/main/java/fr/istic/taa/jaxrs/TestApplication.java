@@ -40,6 +40,7 @@ public class TestApplication extends Application {
         clazzes.add(JacksonConfig.class);
 		
 		// Ressources REST
+        clazzes.add(AuthResource.class);
 		clazzes.add(PetResource.class);
 		clazzes.add(ArtisteResource.class);
 		clazzes.add(EvenementResource.class);

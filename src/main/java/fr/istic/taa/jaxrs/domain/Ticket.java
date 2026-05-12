@@ -3,129 +3,148 @@ package fr.istic.taa.jaxrs.domain;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ticket")
-@NamedQuery(name = "Ticket.findByStatut", query = "SELECT t FROM Ticket t WHERE t.statut = :statut")
-@NamedQuery(name = "Ticket.findByUtilisateur", query = "SELECT t FROM Ticket t WHERE t.utilisateur.idPersonne = :utilisateurId")
+
+@NamedQuery(
+        name = "Ticket.findByStatut",
+        query = "SELECT t FROM Ticket t WHERE t.statut = :statut"
+)
+
+@NamedQuery(
+        name = "Ticket.findByUtilisateur",
+        query = "SELECT t FROM Ticket t WHERE t.utilisateur.idPersonne = :utilisateurId"
+)
+
 public class Ticket implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idTicket;
-	private String numeroPlace;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTicket;
 
-	@Enumerated(EnumType.STRING)
-	private StatutTicketEnum statut;
+    private String numeroPlace;
 
-	private Double prixUnitaire;
-	private LocalDateTime dateAchat;
-	private LocalDateTime dateAnnulation;
-	private LocalDateTime dateRemboursement;
+    @Enumerated(EnumType.STRING)
+    private StatutTicketEnum statut;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "evenement_id")
-	private Evenement evenement;
+    private Double prixUnitaire;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "utilisateur_id")
-	private Utilisateur utilisateur;
+    private LocalDateTime dateAchat;
+    private LocalDateTime dateAnnulation;
+    private LocalDateTime dateRemboursement;
 
-	public Ticket() {}
+    // 🔹 Relation avec événement
+    @ManyToOne
+    @JoinColumn(name = "evenement_id")
+    @JsonIgnoreProperties({"tickets", "artistes", "organisateur"})
+    private Evenement evenement;
 
-	public Ticket(String numeroPlace, Double prixUnitaire, Evenement evenement) {
-		this.numeroPlace = numeroPlace;
-		this.prixUnitaire = prixUnitaire;
-		this.evenement = evenement;
-	}
+    // 🔹 Relation avec utilisateur
+    @ManyToOne
+    @JoinColumn(name = "utilisateur_id")
+    @JsonIgnoreProperties({"tickets", "password"})
+    private Utilisateur utilisateur;
 
-	public Long getIdTicket() {
-		return idTicket;
-	}
+    // 🔹 Constructeur vide obligatoire
+    public Ticket() {}
 
-	public void setIdTicket(Long idTicket) {
-		this.idTicket = idTicket;
-	}
+    // 🔹 Constructeur personnalisé
+    public Ticket(String numeroPlace, Double prixUnitaire, Evenement evenement) {
+        this.numeroPlace = numeroPlace;
+        this.prixUnitaire = prixUnitaire;
+        this.evenement = evenement;
+    }
 
-	public LocalDateTime getDateRemboursement() {
-		return dateRemboursement;
-	}
+    // =========================
+    // GETTERS & SETTERS
+    // =========================
 
-	public void setDateRemboursement(LocalDateTime dateRemboursement) {
-		this.dateRemboursement = dateRemboursement;
-	}
+    public Long getIdTicket() {
+        return idTicket;
+    }
 
-	public LocalDateTime getDateAnnulation() {
-		return dateAnnulation;
-	}
+    public void setIdTicket(Long idTicket) {
+        this.idTicket = idTicket;
+    }
 
-	public void setDateAnnulation(LocalDateTime dateAnnulation) {
-		this.dateAnnulation = dateAnnulation;
-	}
+    public String getNumeroPlace() {
+        return numeroPlace;
+    }
 
-	public LocalDateTime getDateAchat() {
-		return dateAchat;
-	}
+    public void setNumeroPlace(String numeroPlace) {
+        this.numeroPlace = numeroPlace;
+    }
 
-	public void setDateAchat(LocalDateTime dateAchat) {
-		this.dateAchat = dateAchat;
-	}
+    public StatutTicketEnum getStatut() {
+        return statut;
+    }
 
-	public Double getPrixUnitaire() {
-		return prixUnitaire;
-	}
+    public void setStatut(StatutTicketEnum statut) {
+        this.statut = statut;
+    }
 
-	public void setPrixUnitaire(Double prixUnitaire) {
-		this.prixUnitaire = prixUnitaire;
-	}
+    public Double getPrixUnitaire() {
+        return prixUnitaire;
+    }
 
-	public StatutTicketEnum getStatut() {
-		return statut;
-	}
+    public void setPrixUnitaire(Double prixUnitaire) {
+        this.prixUnitaire = prixUnitaire;
+    }
 
-	public void setStatut(StatutTicketEnum statut) {
-		this.statut = statut;
-	}
+    public LocalDateTime getDateAchat() {
+        return dateAchat;
+    }
 
-	public String getNumeroPlace() {
-		return numeroPlace;
-	}
+    public void setDateAchat(LocalDateTime dateAchat) {
+        this.dateAchat = dateAchat;
+    }
 
-	public void setNumeroPlace(String numeroPlace) {
-		this.numeroPlace = numeroPlace;
-	}
+    public LocalDateTime getDateAnnulation() {
+        return dateAnnulation;
+    }
 
-	public Evenement getEvenement() {
-		return evenement;
-	}
+    public void setDateAnnulation(LocalDateTime dateAnnulation) {
+        this.dateAnnulation = dateAnnulation;
+    }
 
-	public void setEvenement(Evenement evenement) {
-		this.evenement = evenement;
-	}
+    public LocalDateTime getDateRemboursement() {
+        return dateRemboursement;
+    }
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
+    public void setDateRemboursement(LocalDateTime dateRemboursement) {
+        this.dateRemboursement = dateRemboursement;
+    }
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
+    public Evenement getEvenement() {
+        return evenement;
+    }
 
-	@Override
-	public String toString() {
-		return "Ticket{" +
-				"ticketId=" + idTicket +
-				", numeroPlace='" + numeroPlace + '\'' +
-				", statut=" + statut +
-				", prixUnitaire=" + prixUnitaire +
-				", dateAchat=" + dateAchat +
-				", dateAnnulation=" + dateAnnulation +
-				", dateRemboursement=" + dateRemboursement +
-				'}';
-	}
+    public void setEvenement(Evenement evenement) {
+        this.evenement = evenement;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId=" + idTicket +
+                ", numeroPlace='" + numeroPlace + '\'' +
+                ", statut=" + statut +
+                ", prixUnitaire=" + prixUnitaire +
+                ", dateAchat=" + dateAchat +
+                ", dateAnnulation=" + dateAnnulation +
+                ", dateRemboursement=" + dateRemboursement +
+                '}';
+    }
 }
