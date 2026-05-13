@@ -182,6 +182,79 @@ public class TicketResource {
     }
 
     /**
+     * Vérifie un ticket à partir de son ID.
+     * Utilisé pour contrôler le QR code à l'entrée.
+     */
+    @GET
+    @Path("/verify/{id}")
+    @Produces("application/json")
+    public Response verifyTicket(@PathParam("id") Long id) {
+        try {
+            Ticket ticket = service.getTicketById(id);
+
+            if (ticket == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"valid\": false, \"message\": \"Ticket introuvable\"}")
+                        .build();
+            }
+
+            if (ticket.getStatut() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"valid\": false, \"message\": \"Statut du ticket invalide\"}")
+                        .build();
+            }
+
+            if (!ticket.getStatut().name().equals("ACHETE")) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"valid\": false, \"message\": \"Ticket déjà utilisé ou annulé\"}")
+                        .build();
+            }
+
+            return Response.ok(ticket).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"valid\": false, \"message\": \"" + e.getMessage() + "\"}")
+                    .build();
+        }
+    }
+
+    /**
+     * Marque un ticket comme utilisé après contrôle.
+     */
+    @PUT
+    @Path("/validate/{id}")
+    @Produces("application/json")
+    public Response validateTicket(@PathParam("id") Long id) {
+        try {
+            Ticket ticket = service.getTicketById(id);
+
+            if (ticket == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"message\": \"Ticket introuvable\"}")
+                        .build();
+            }
+
+            if (!ticket.getStatut().name().equals("ACHETE")) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"message\": \"Ticket déjà utilisé ou annulé\"}")
+                        .build();
+            }
+
+            ticket.setStatut(StatutTicketEnum.UTILISE);
+
+            Ticket updated = service.updateTicket(id, ticket);
+
+            return Response.ok(updated).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"message\": \"" + e.getMessage() + "\"}")
+                    .build();
+        }
+    }
+
+    /**
      * Chiffre d’affaires d’un événement
      */
     @GET
