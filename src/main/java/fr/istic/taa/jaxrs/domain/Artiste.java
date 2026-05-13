@@ -1,7 +1,7 @@
 package fr.istic.taa.jaxrs.domain;
 
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,6 +47,7 @@ public class Artiste implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @JsonIgnore
 	@ManyToMany(mappedBy = "artistes")
 	private List<Evenement> evenements = new ArrayList<>();
 
